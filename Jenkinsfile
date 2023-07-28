@@ -26,8 +26,34 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                echo 'Deliver....'
-                echo "doing delivery stuff.."
+                // Build Docker image for your web app
+                script {
+                    def imageName = 'your-app-image-name'
+                    def imageTag = 'your-app-image-tag'
+                    
+                    docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                }
+
+                // Push Docker image to Docker host
+                script {
+                    def imageName = 'your-app-image-name'
+                    def imageTag = 'your-app-image-tag'
+                    def dockerHost = 'your-docker-host' // Replace with your Docker host IP/hostname
+
+                    docker.withRegistry("https://${dockerHost}") {
+                        dockerImage.push(imageName + ':' + imageTag)
+                    }
+                }
+
+                // SSH into Docker host and run the container
+                script {
+                    def dockerHost = 'your-docker-host' // Replace with your Docker host IP/hostname
+                    def imageName = 'your-app-image-name'
+                    def imageTag = 'your-app-image-tag'
+                    def containerName = 'your-container-name'
+
+                    sh "ssh user@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
+                    sh "ssh user@${dockerHost} 'docker run -d --name ${containerName} -p 80:5000 ${imageName}:${imageTag}'"
             }
         }
     }
