@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Run the thing
-ENTRYPOINT ["flask",  "--app app.py", "run", "--host=0.0.0.0", "--port=8080"]
+ENTRYPOINT ["flask",  "--app", "app.py", "run", "--host=0.0.0.0", "--port=8080"]
