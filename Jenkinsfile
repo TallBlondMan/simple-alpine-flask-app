@@ -11,7 +11,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building.."
-                git 'https://github.com/TallBlondMan/simple-alpine-flask-app.git'
                 sh 'pip install -r requirements.txt'
                 sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
                 echo "Server should be up and running"
