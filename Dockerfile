@@ -1,14 +1,11 @@
-FROM alpine
+FROM alpine:3.18.2
 
-# Add Python dependencies
-RUN apk update && apk add python3 py3-pip 
-
-# Install Flask server
-RUN pip install flask 
+# Add Python dependencies and Flask
+RUN apk update && apk add python3 py3-pip \
+	&& pip install flask
 
 # Copy source-code
-COPY app.py /flask_app/app.py
-COPY templates/index.html /flask_app/templates/index.html
+COPY . /flask_app/
 
 # Expose app port
 EXPOSE 8080
