@@ -4,6 +4,9 @@ pipeline {
             label 'docker-alpine-python-flask'
             }
       }
+    triggers {
+        pollSCM '*/5 * * * *'
+    }
     stages {
         stage('Build') {
             steps {
