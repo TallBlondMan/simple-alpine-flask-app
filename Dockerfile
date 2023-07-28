@@ -1,8 +1,10 @@
 FROM alpine:3.18.2
 
 # Add Python dependencies and Flask
-RUN apk update && apk add python3 py3-pip \
-	&& pip install flask
+RUN apk update && apk add python3 py3-pip
+
+# Instaling dependencies
+RUN pip install -r requirements.txt
 
 # Copy source-code
 COPY . /flask_app/
