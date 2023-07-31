@@ -40,7 +40,7 @@ pipeline {
                     def imageTag = "${env.BUILD_NUMBER}"
                     def dockerHost = '10.6.0.232'
                     node {
-                        docker.withServer("ssh://jenkins@${dockerHost}") {
+                        docker.withDockerServer("ssh://jenkins@${dockerHost}") {
                             docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                         }
                     }
@@ -53,7 +53,7 @@ pipeline {
                     def dockerHost = '10.6.0.232'
 
                     node {
-                        docker.withServer("ssh://jenkins@${dockerHost}") {
+                        docker.withDockerServer("ssh://jenkins@${dockerHost}") {
                             dockerImage.push(imageName + ':' + imageTag)
                         }
                     }
