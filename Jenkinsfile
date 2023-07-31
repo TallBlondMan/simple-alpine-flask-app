@@ -28,7 +28,7 @@ pipeline {
             steps {
                 // Build Docker image for your web app
                 script {
-                    def imageName = 'your-app-image-name'
+                    def imageName = 'my-flask-app'
                     def imageTag = 'your-app-image-tag'
                     
                     docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
@@ -36,8 +36,8 @@ pipeline {
 
                 // Push Docker image to Docker host
                 script {
-                    def imageName = 'your-app-image-name'
-                    def imageTag = 'your-app-image-tag'
+                    def imageName = 'my-flask-app'
+                    def imageTag = '$env.BUILD_NUMBER'
                     def dockerHost = 'your-docker-host' // Replace with your Docker host IP/hostname
 
                     docker.withRegistry("https://${dockerHost}") {
