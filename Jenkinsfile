@@ -38,9 +38,9 @@ pipeline {
                 script {
                     def imageName = "my-flask-app"
                     def imageTag = "${env.BUILD_NUMBER}"
-                    def dockerHost = '10.6.0.232'
+                    def dockerHost = '10.6.0.232:2376'
                     node {
-                        docker.withDockerServer("ssh://jenkins@${dockerHost}") {
+                        docker.withServer("tcp://${dockerHost}") {
                             docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                         }
                     }
@@ -50,10 +50,10 @@ pipeline {
                 script {
                     def imageName = 'my-flask-app'
                     def imageTag = "${env.BUILD_NUMBER}"
-                    def dockerHost = '10.6.0.232'
+                    def dockerHost = '10.6.0.232:2376'
 
                     node {
-                        docker.withDockerServer("ssh://jenkins@${dockerHost}") {
+                        docker.withServer("tcp://${dockerHost}") {
                             dockerImage.push(imageName + ':' + imageTag)
                         }
                     }
