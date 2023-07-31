@@ -3,7 +3,7 @@ pipeline {
         node {
             label 'docker-alpine-python-flask'
             }
-      }
+    }
     triggers {
         pollSCM 'H/5 * * * *'
     }
@@ -53,6 +53,7 @@ pipeline {
 
                     sh "ssh msmet@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
                     sh "ssh msmet@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
+                }
             }
         }
     }
