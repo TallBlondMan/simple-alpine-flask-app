@@ -30,8 +30,9 @@ pipeline {
                 script {
                     def imageName = "my-flask-app"
                     def imageTag = "${env.BUILD_NUMBER}"
+                    def dockerHost = '10.6.0.232'
                     
-                    docker.withServer('tcp://172.17.0.3:2375') {
+                    docker.withServer("ssh://jenkins@${dockerHost}") {
                         docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                     }
                 }
@@ -42,7 +43,7 @@ pipeline {
                     def imageTag = "${env.BUILD_NUMBER}"
                     def dockerHost = '10.6.0.232'
 
-                    docker.withServer('tcp://172.17.0.3:2375') {
+                    docker.withServer("ssh://jenkins@${dockerHost}") {
                         dockerImage.push(imageName + ':' + imageTag)
                     }
                 }
@@ -54,8 +55,8 @@ pipeline {
                     def imageTag = "${env.BUILD_NUMBER}"
                     def containerName = "flask-ver-${env.BUILD_NUMBER}"
 
-                    sh "ssh msmet@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
-                    sh "ssh msmet@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
+                    sh "ssh jenkins@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
+                    sh "ssh jenkins@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
                 }
                 echo "Server should be up and running..."
             }
