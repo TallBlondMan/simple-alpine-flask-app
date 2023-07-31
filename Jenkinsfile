@@ -17,7 +17,7 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {1
+            steps {
                 echo "Testing.."
                 sh 'apk add curl'
                 sh 'curl localhost:8080'
