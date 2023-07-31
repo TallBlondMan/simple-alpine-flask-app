@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                echo '${env.BUILD_NUMBER}'
+                echo '$BUILD_NUMBER'
                 echo "doing delivery stuff.."
             }
         }
