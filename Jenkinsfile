@@ -17,7 +17,7 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
+            steps {1
                 echo "Testing.."
                 sh 'apk add curl'
                 sh 'curl localhost:8080'
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                echo '$BUILD_NUMBER'
+                echo '${BUILD_NUMBER}'
                 echo "doing delivery stuff.."
             }
         }
