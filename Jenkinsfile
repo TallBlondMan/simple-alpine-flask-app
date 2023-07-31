@@ -26,10 +26,9 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                // Build Docker image for your web app
                 script {
                     def imageName = 'my-flask-app'
-                    def imageTag = 'your-app-image-tag'
+                    def imageTag = '${env.BUILD_NUMBER}'
                     
                     docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                 }
@@ -37,8 +36,8 @@ pipeline {
                 // Push Docker image to Docker host
                 script {
                     def imageName = 'my-flask-app'
-                    def imageTag = '$env.BUILD_NUMBER'
-                    def dockerHost = 'your-docker-host' // Replace with your Docker host IP/hostname
+                    def imageTag = '${env.BUILD_NUMBER}'
+                    def dockerHost = '10.6.0.232'
 
                     docker.withRegistry("https://${dockerHost}") {
                         dockerImage.push(imageName + ':' + imageTag)
@@ -47,13 +46,13 @@ pipeline {
 
                 // SSH into Docker host and run the container
                 script {
-                    def dockerHost = 'your-docker-host' // Replace with your Docker host IP/hostname
-                    def imageName = 'your-app-image-name'
-                    def imageTag = 'your-app-image-tag'
-                    def containerName = 'your-container-name'
+                    def dockerHost = '10.6.0.232' // Replace with your Docker host IP/hostname
+                    def imageName = 'my-flask-app'
+                    def imageTag = '${env.BUILD_NUMBER}'
+                    def containerName = 'flask-ver-${env.BUILD_NUMBER}'
 
-                    sh "ssh user@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
-                    sh "ssh user@${dockerHost} 'docker run -d --name ${containerName} -p 80:5000 ${imageName}:${imageTag}'"
+                    sh "ssh msmet@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
+                    sh "ssh msmet@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
             }
         }
     }
