@@ -1,13 +1,16 @@
 pipeline {
     agent { 
+        // Chose the node to use - this example it's Docker Cloud template
         node {
             label 'docker-alpine-python-flask'
             }
     }
+    // Trigers the build every 5 min if there are changes in repo
     triggers {
         pollSCM 'H/5 * * * *'
     }
     stages {
+        // This will build the image on 'worker' and run it for tests
         stage('Build') {
             steps {
                 echo "Building.."
@@ -17,6 +20,8 @@ pipeline {
             }
         }
         stage('Test') {
+            // Some complex testing stage - other workers can be used to test the app
+            // this is simple curl
             steps {
                 echo "Testing.."
                 sh 'apk add curl'
@@ -26,7 +31,10 @@ pipeline {
         }
         stage('Deliver') {
             steps {
+                // This will build image, push image to repo and run the app on remote server with newest image
                 echo "Starting delivery"
+
+                // Build Docker image
                 script {
                     def imageName = "my-flask-app"
                     def imageTag = "${env.BUILD_NUMBER}"
@@ -50,7 +58,7 @@ pipeline {
 
                 // SSH into Docker host and run the container
                 script {
-                    def dockerHost = '10.6.0.232' // Replace with your Docker host IP/hostname
+                    def dockerHost = '10.6.0.232' 
                     def imageName = 'my-flask-app'
                     def imageTag = "${env.BUILD_NUMBER}"
                     def containerName = "flask-ver-${env.BUILD_NUMBER}"
