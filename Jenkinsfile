@@ -26,6 +26,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
+                echo "Starting delivery"
                 script {
                     def imageName = 'my-flask-app'
                     def imageTag = '${env.BUILD_NUMBER}'
@@ -54,6 +55,7 @@ pipeline {
                     sh "ssh msmet@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
                     sh "ssh msmet@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
                 }
+                echo "Server should be up and running..."
             }
         }
     }
