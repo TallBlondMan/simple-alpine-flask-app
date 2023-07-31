@@ -31,7 +31,9 @@ pipeline {
                     def imageName = "my-flask-app"
                     def imageTag = "${env.BUILD_NUMBER}"
                     
-                    docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                    docker.withServer('tcp://172.17.0.3:2375') {
+                        docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                    }
                 }
 
                 // Push Docker image to Docker host
@@ -40,7 +42,7 @@ pipeline {
                     def imageTag = "${env.BUILD_NUMBER}"
                     def dockerHost = '10.6.0.232'
 
-                    docker.withRegistry("https://${dockerHost}") {
+                    docker.withServer('tcp://172.17.0.3:2375') {
                         dockerImage.push(imageName + ':' + imageTag)
                     }
                 }
