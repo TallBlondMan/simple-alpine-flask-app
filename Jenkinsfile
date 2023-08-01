@@ -13,7 +13,7 @@ pipeline {
         // This will build the image on 'worker' and run it for tests
         stage('Build') {
             steps {
-                echo "Building.."
+                echo "=============Building=================="
                 sh 'pip install -r requirements.txt'
                 sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
                 echo "Server should be up and running"
@@ -23,7 +23,7 @@ pipeline {
             // Some complex testing stage - other workers can be used to test the app
             // this is simple curl
             steps {
-                echo "Testing.."
+                echo "=============Testing==================="
                 sh 'apk add curl'
                 sh 'curl localhost:8080'
                 echo "Testing done"
@@ -32,7 +32,7 @@ pipeline {
         stage('Deliver') {
             steps {
                 // This will build image, push image to repo and run the app on remote server with newest image
-                echo "Starting delivery"
+                echo "===========Starting delivery============"
 
                 // Build Docker image
                 script {
