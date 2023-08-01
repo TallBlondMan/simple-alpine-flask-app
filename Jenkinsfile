@@ -39,7 +39,10 @@ pipeline {
                     def imageName = "my-flask-app"
                     def imageTag = "${env.BUILD_NUMBER}"
                     def dockerHost = '10.6.0.232:2376'
+                    sh 'ls -l'
+                    sh 'pwd'
                     node {
+                        checkout scm
                         docker.withServer("tcp://${dockerHost}") {
                             docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                         }
