@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    'tallblondman/alpine-python-flask:1.3'
+                    image 'tallblondman/alpine-python-flask:1.3'
                 }
             }
             steps {
@@ -17,7 +17,6 @@ pipeline {
                     sh 'pip install -r requirements.txt'
                     sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
                     echo "Server should be up and running"
-                }
             }
         }
         stage('Test') {
@@ -25,7 +24,7 @@ pipeline {
             // this is simple curl
             agent {
                 docker {
-                    'tallblondman/alpine-python-flask:1.3'
+                    image 'tallblondman/alpine-python-flask:1.3'
                 }
             }
             steps {
@@ -84,3 +83,4 @@ pipeline {
             }
         }
     }
+}
