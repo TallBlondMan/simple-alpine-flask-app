@@ -57,6 +57,7 @@ pipeline {
                     def dockerHost = '10.6.0.232:2376'
 
                     node {
+                        checkout scm
                         docker.withServer("tcp://${dockerHost}") {
                             dockerImage.push(imageName + ':' + imageTag)
                         }
