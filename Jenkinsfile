@@ -9,8 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 node ('docker-alpine-python-flask') {
-                    scm checkout
-                    
+                    checkout scm 
+
                     echo "=============Building=================="
                     sh 'pip install -r requirements.txt'
                     sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
