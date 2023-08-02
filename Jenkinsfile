@@ -1,10 +1,5 @@
 pipeline {
-    agent { 
-        // Chose the node to use - this example it's Docker Cloud template
-        node {
-            label 'docker-alpine-python-flask'
-            }
-    }
+    agent none  
     // Trigers the build every 5 min if there are changes in repo
     triggers {
         pollSCM 'H/5 * * * *'
@@ -12,11 +7,13 @@ pipeline {
     stages {
         // This will build the image on 'worker' and run it for tests
         stage('Build') {
-            steps {
-                echo "=============Building=================="
-                sh 'pip install -r requirements.txt'
-                sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
-                echo "Server should be up and running"
+            node ('docker-alpine-python-flask') {
+                steps {
+                    echo "=============Building=================="
+                    sh 'pip install -r requirements.txt'
+                    sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
+                    echo "Server should be up and running"
+                }
             }
         }
         stage('Test') {
