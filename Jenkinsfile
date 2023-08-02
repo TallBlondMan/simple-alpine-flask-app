@@ -7,10 +7,12 @@ pipeline {
     stages {
         // This will build the image on 'worker' and run it for tests
         stage('Build') {
+            agent {
+                docker {
+                    'tallblondman/alpine-python-flask:1.3'
+                }
+            }
             steps {
-                node ('docker-alpine-python-flask') {
-                    checkout scm 
-
                     echo "=============Building=================="
                     sh 'pip install -r requirements.txt'
                     sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
@@ -21,6 +23,11 @@ pipeline {
         stage('Test') {
             // Some complex testing stage - other workers can be used to test the app
             // this is simple curl
+            agent {
+                docker {
+                    'tallblondman/alpine-python-flask:1.3'
+                }
+            }
             steps {
                 echo "=============Testing==================="
                 sh 'apk add curl'
