@@ -27,7 +27,11 @@ pipeline {
             steps {
                 // This will build image, push image to repo and run the app on remote server with newest image
                 echo "===========Starting delivery============"
-
+                agent {
+                    docker {
+                        docker.withServer("tcp://${dockerHost}")
+                    }
+                }
                 // Build Docker image
                 script {
                     def imageName = "my-flask-app"
