@@ -31,20 +31,21 @@ pipeline {
                     label 'test-123'
                 }
                 // Build Docker image
-                script {
-                    def imageName = "my-flask-app"
-                    def imageTag = "${env.BUILD_NUMBER}"
-                    def dockerHost = '10.6.0.232:2376'
-                    sh 'ls -l'
-                    sh 'pwd'
-                    node {
-                        checkout scm
+                node ('test-123') {
+                    script{
+                        def imageName = "my-flask-app"
+                        def imageTag = "${env.BUILD_NUMBER}"
+                        def dockerHost = '10.6.0.232:2376'
+                        sh 'ls -l'
                         sh 'pwd'
-                        docker.withServer("tcp://${dockerHost}") {
-                            docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                        node {
+                            checkout scm
+                            sh 'pwd'
+                            docker.withServer("tcp://${dockerHost}") {
+                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                            }
                         }
                     }
-                }
 
                 // Push Docker image to Docker host
                 script {
