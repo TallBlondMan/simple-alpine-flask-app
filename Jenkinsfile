@@ -39,8 +39,7 @@ pipeline {
                             checkout scm
                             sh 'pwd'
                             docker.withServer("tcp://${dockerHost}") {
-                                def newBuildImage = docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
-                                newBuildImage.push()
+                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                             }
                         }
                     }
