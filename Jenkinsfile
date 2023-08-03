@@ -39,12 +39,15 @@ pipeline {
                             checkout scm
                             sh 'pwd'
                             docker.withServer("tcp://${dockerHost}") {
-                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                                def newBuildImage = docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                                newBuildImage.push()
                             }
                         }
                     }
-                // Push Docker image to Docker host
+                // Push Docker image to Docker host 
+                /*
                     script {
+                        
                         def imageName = 'my-flask-app'
                         def imageTag = "${env.BUILD_NUMBER}"
                         def dockerHost = '10.6.0.232:2376'
@@ -56,6 +59,7 @@ pipeline {
                                 }
                             }
                         }
+                */        
 
                     // SSH into Docker host and run the container
                     script {
