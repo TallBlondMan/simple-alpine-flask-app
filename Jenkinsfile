@@ -21,9 +21,7 @@ pipeline {
             // Some complex testing stage - other workers can be used to test the app
             // this is simple curl
             agent {
-                docker {
-                    image 'tallblondman/alpine-python-flask:1.3'
-                }
+                label 'docker-alpine-python-flask'
             }
             steps {
                 echo "=============Testing==================="
