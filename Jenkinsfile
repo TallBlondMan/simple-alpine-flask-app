@@ -8,13 +8,11 @@ pipeline {
         // This will build the image on 'worker' and run it for tests
         stage('Build') {
             agent {
-                docker {
-                    image 'tallblondman/alpine-python-flask:1.3'
-                }
+                label 'docker-alpine-python-flask'
             }
             steps {
                     echo "=============Building=================="
-                    sh 'pip install -r requirements.txt --user'
+                    sh 'pip install -r requirements.txt'
                     sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
                     echo "Server should be up and running"
             }
