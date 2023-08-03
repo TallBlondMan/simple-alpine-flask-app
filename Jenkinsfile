@@ -68,7 +68,7 @@ pipeline {
 
                         sh 'hostname'
                         sh 'pwd'
-                        sh "docker ps -af NAME=flask-ver-* | xargs docker rm -f"
+                        sh "docker ps -a | grep flask-ver | awk '{print $1}' | xargs -r docker rm -f"
                         sh "docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}"
                     }
                     echo "Server should be up and running..."
