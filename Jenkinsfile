@@ -40,7 +40,9 @@ pipeline {
                             sh 'pwd'
                             docker.withServer("tcp://${dockerHost}") {
                                 def newBuildImage = docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
-                                newBuildImage.push()
+                                docker.withRegistry("https://${dockerHost}") {
+                                    newBuildImage.push()
+                                }
                             }
                         }
                     }
