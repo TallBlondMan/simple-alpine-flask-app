@@ -28,7 +28,7 @@ pipeline {
                 // This will build image, push image to repo and run the app on remote server with newest image
                 echo "===========Starting delivery============"
                 // Build Docker image
-                node ('test-123') {
+                node ('Deployment') {
                     script{
                         def imageName = "tallblondman/my-flask-app"
                         def imageTag = "${env.BUILD_NUMBER}"
