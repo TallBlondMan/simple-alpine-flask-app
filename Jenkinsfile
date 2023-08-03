@@ -38,12 +38,10 @@ pipeline {
                         def dockerHost = '10.6.0.232:2376'
                         sh 'ls -l'
                         sh 'pwd'
-                        node {
-                            checkout scm
-                            sh 'pwd'
-                            docker.withServer("tcp://${dockerHost}") {
-                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
-                            }
+                        // checkout scm
+                        sh 'pwd'
+                        docker.withServer("tcp://${dockerHost}") {
+                            docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                         }
                     }
                 // Push Docker image to Docker host
@@ -52,11 +50,9 @@ pipeline {
                         def imageTag = "${env.BUILD_NUMBER}"
                         def dockerHost = '10.6.0.232:2376'
 
-                        node {
-                            checkout scm
-                            docker.withServer("tcp://${dockerHost}") {
-                                dockerImage.push(imageName + ':' + imageTag)
-                            }
+                        // checkout scm
+                        docker.withServer("tcp://${dockerHost}") {
+                            dockerImage.push(imageName + ':' + imageTag)
                         }
                     }
 
