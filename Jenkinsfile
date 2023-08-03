@@ -27,9 +27,6 @@ pipeline {
             steps {
                 // This will build image, push image to repo and run the app on remote server with newest image
                 echo "===========Starting delivery============"
-                agent {
-                    label 'test-123'
-                }
                 // Build Docker image
                 node ('test-123') {
                     script{
