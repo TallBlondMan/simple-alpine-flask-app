@@ -6,7 +6,7 @@ pipeline {
     }
     stages {
         // This will build the image on 'worker' and run it for tests
-        stage('Build' and 'Test') {
+        stage('Build and Test') {
             agent {
                 label 'docker-alpine-python-flask'
             }
