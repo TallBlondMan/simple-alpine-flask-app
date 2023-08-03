@@ -46,32 +46,32 @@ pipeline {
                             }
                         }
                     }
-                }
                 // Push Docker image to Docker host
-                script {
-                    def imageName = 'my-flask-app'
-                    def imageTag = "${env.BUILD_NUMBER}"
-                    def dockerHost = '10.6.0.232:2376'
+                    script {
+                        def imageName = 'my-flask-app'
+                        def imageTag = "${env.BUILD_NUMBER}"
+                        def dockerHost = '10.6.0.232:2376'
 
-                    node {
-                        checkout scm
-                        docker.withServer("tcp://${dockerHost}") {
-                            dockerImage.push(imageName + ':' + imageTag)
+                        node {
+                            checkout scm
+                            docker.withServer("tcp://${dockerHost}") {
+                                dockerImage.push(imageName + ':' + imageTag)
+                            }
                         }
                     }
-                }
 
                 // SSH into Docker host and run the container
-                script {
-                    def dockerHost = '10.6.0.232' 
-                    def imageName = 'my-flask-app'
-                    def imageTag = "${env.BUILD_NUMBER}"
-                    def containerName = "flask-ver-${env.BUILD_NUMBER}"
+                    script {
+                        def dockerHost = '10.6.0.232' 
+                        def imageName = 'my-flask-app'
+                        def imageTag = "${env.BUILD_NUMBER}"
+                        def containerName = "flask-ver-${env.BUILD_NUMBER}"
 
-                    sh "ssh jenkins@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
-                    sh "ssh jenkins@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
-                }
+                        sh "ssh jenkins@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
+                        sh "ssh jenkins@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
+                    }
                 echo "Server should be up and running..."
+                }
             }
         }
     }
