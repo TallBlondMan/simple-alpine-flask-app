@@ -62,12 +62,13 @@ pipeline {
 
                     // SSH into Docker host and run the container
                     script {
-                        def dockerHost = '10.6.0.232' 
                         def imageName = "tallblondman/my-flask-app"
                         def imageTag = "${env.BUILD_NUMBER}"
                         def containerName = "flask-ver-${env.BUILD_NUMBER}"
+
                         sh 'hostname'
                         sh 'pwd'
+                        sh "docker ps -af NAME=flask-ver-* | xargs docker rm -f"
                         sh "docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}"
                     }
                     echo "Server should be up and running..."
