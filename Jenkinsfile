@@ -30,7 +30,7 @@ pipeline {
                 // Build Docker image
                 node ('test-123') {
                     script{
-                        def imageName = "my-flask-app"
+                        def imageName = "tallblondman/my-flask-app"
                         def imageTag = "${env.BUILD_NUMBER}"
                         def dockerHost = '10.6.0.232:2376'
                         sh 'ls -l'
@@ -40,9 +40,7 @@ pipeline {
                             sh 'pwd'
                             docker.withServer("tcp://${dockerHost}") {
                                 def newBuildImage = docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
-                                docker.withRegistry("https://10.6.0.232") {
-                                    newBuildImage.push()
-                                }
+                                newBuildImage.push()
                             }
                         }
                     }
@@ -66,7 +64,7 @@ pipeline {
                     // SSH into Docker host and run the container
                     script {
                         def dockerHost = '10.6.0.232' 
-                        def imageName = 'my-flask-app'
+                        def imageName = "tallblondman/my-flask-app"
                         def imageTag = "${env.BUILD_NUMBER}"
                         def containerName = "flask-ver-${env.BUILD_NUMBER}"
 
