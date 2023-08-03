@@ -66,9 +66,9 @@ pipeline {
                         def imageName = "tallblondman/my-flask-app"
                         def imageTag = "${env.BUILD_NUMBER}"
                         def containerName = "flask-ver-${env.BUILD_NUMBER}"
-
-                        sh "ssh jenkins@${dockerHost} 'docker pull ${imageName}:${imageTag}'"
-                        sh "ssh jenkins@${dockerHost} 'docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}'"
+                        sh 'hostname'
+                        sh 'pwd'
+                        sh "docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}"
                     }
                     echo "Server should be up and running..."
                 }
