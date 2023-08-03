@@ -14,7 +14,7 @@ pipeline {
             }
             steps {
                     echo "=============Building=================="
-                    sh 'pip install -r requirements.txt'
+                    sh 'pip install -r requirements.txt --user'
                     sh 'flask --app app.py run --host=0.0.0.0 --port=8080 &'
                     echo "Server should be up and running"
             }
