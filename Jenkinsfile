@@ -46,7 +46,7 @@ pipeline {
                             }
                         }
                     }
-
+                }
                 // Push Docker image to Docker host
                 script {
                     def imageName = 'my-flask-app'
