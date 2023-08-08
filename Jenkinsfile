@@ -4,10 +4,6 @@ pipeline {
     triggers {
         pollSCM 'H/5 * * * *'
     }
-        // string(name: 'imageName', defaultValue: 'tallblondman/my-flask-app', description: 'Name of the complete Docker image')
-        // string(name: 'imageTag', defaultValue: "${env.BUILD_NUMBER}", description: 'Tag is the number of build')
-        // string(name: 'dockerHost', defaultValue: '10.6.0.232:2376', description: 'The host on which Docker is installed and images will be deployed')
-        // string(name: 'containerName', defaultValue: "flask-ver-${env.BUILD_NUMBER}", description: 'Name of the container that will be deployed on host')
     stages {
         // This will build the image on 'worker' and run it for tests
         stage('Build and Test') {
