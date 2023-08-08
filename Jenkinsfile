@@ -21,6 +21,8 @@ pipeline {
                     sh 'apk add curl'
                     sh 'curl localhost:8080'
                     echo "Testing done"
+                    // Cleanup of running Agent - it fails to remove it after stage end???
+                    sh "docker ps -a | grep alpine-python-flask | awk '{print \$1}' | xargs -r docker rm -f"
             }
         }
         stage('Deliver') {
