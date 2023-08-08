@@ -41,8 +41,8 @@ pipeline {
                         sh 'pwd'
                         node {
                             checkout scm
-                            docker.withServer("tcp://${param.dockerHost}") {
-                                docker.build(param.imageName + ':' + param.imageTag, '-f Dockerfile .')
+                            docker.withServer("tcp://${dockerHost}") {
+                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
                             }
                         }
                     }
@@ -72,7 +72,7 @@ pipeline {
                         sh 'hostname'
                         sh 'pwd'
                         sh "docker ps -a | grep flask-ver | awk '{print \$1}' | xargs -r docker rm -f"
-                        sh "docker run -d --name ${param.containerName} -p 8080:8080 ${param.imageName}:${param.imageTag}"
+                        sh "docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}"
                     }
                     echo "Server should be up and running..."
                 }
