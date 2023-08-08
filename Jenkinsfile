@@ -43,7 +43,6 @@ pipeline {
                         sh 'pwd'
                         node {
                             checkout scm
-                            sh 'pwd'
                             docker.withServer("tcp://${param.dockerHost}") {
                                 docker.build(param.imageName + ':' + param.imageTag, '-f Dockerfile .')
                             }
