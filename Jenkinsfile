@@ -4,6 +4,12 @@ pipeline {
     triggers {
         pollSCM 'H/5 * * * *'
     }
+    parameters {
+        string(name: 'imageName', defailtValue: 'tallblondman/my-flask-app', description: 'Name of the complete Docker image')
+        string(name: 'imageTag', defailtValue: "${env.BUILD_NUMBER}", description: 'Tag is the number of build')
+        string(name: 'dockerHost', defailtValue: '10.6.0.232:2376', description: 'The host on which Docker is installed and images will be deployed')
+        string(name: 'containerName', defailtValue: "flask-ver-${env.BUILD_NUMBER}", description: 'Name of the container that will be deployed on host')
+    }
     stages {
         // This will build the image on 'worker' and run it for tests
         stage('Build and Test') {
@@ -30,16 +36,16 @@ pipeline {
                 // Build Docker image
                 node ('Deployment') {
                     script{
-                        def imageName = "tallblondman/my-flask-app"
-                        def imageTag = "${env.BUILD_NUMBER}"
-                        def dockerHost = '10.6.0.232:2376'
+                        //def imageName = "tallblondman/my-flask-app"
+                        //def imageTag = "${env.BUILD_NUMBER}"
+                        //def dockerHost = '10.6.0.232:2376'
                         sh 'ls -l'
                         sh 'pwd'
                         node {
                             checkout scm
                             sh 'pwd'
-                            docker.withServer("tcp://${dockerHost}") {
-                                docker.build(imageName + ':' + imageTag, '-f Dockerfile .')
+                            docker.withServer("tcp://${param.dockerHost}") {
+                                docker.build(param.imageName + ':' + param.imageTag, '-f Dockerfile .')
                             }
                         }
                     }
@@ -62,14 +68,14 @@ pipeline {
 
                     // SSH into Docker host and run the container
                     script {
-                        def imageName = "tallblondman/my-flask-app"
-                        def imageTag = "${env.BUILD_NUMBER}"
-                        def containerName = "flask-ver-${env.BUILD_NUMBER}"
+                        //def imageName = "tallblondman/my-flask-app"
+                        //def imageTag = "${env.BUILD_NUMBER}"
+                        //def containerName = "flask-ver-${env.BUILD_NUMBER}"
 
                         sh 'hostname'
                         sh 'pwd'
                         sh "docker ps -a | grep flask-ver | awk '{print \$1}' | xargs -r docker rm -f"
-                        sh "docker run -d --name ${containerName} -p 8080:8080 ${imageName}:${imageTag}"
+                        sh "docker run -d --name ${param.containerName} -p 8080:8080 ${param.imageName}:${param.imageTag}"
                     }
                     echo "Server should be up and running..."
                 }
