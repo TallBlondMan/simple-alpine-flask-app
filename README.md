@@ -26,4 +26,9 @@ Project was tested on a dockerized version of Jenkins which pose some issues wit
    Run the container with params
    `docker run -d --restart=always -p 127.0.0.1:2376:2375 --network jenkins -v /var/run/docker.sock:/var/run/docker.sock alpine/socat tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock`
 
-4. 
+4. Run the Jenkins container with default config found on git page
+
+## Running the project
+
+Just create a new pipeline and configure it to use Git URL.
+Get script from SCM and the rest should go through.
