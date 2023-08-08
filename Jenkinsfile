@@ -5,10 +5,10 @@ pipeline {
         pollSCM 'H/5 * * * *'
     }
     parameters {
-        string(name: 'imageName', defaultValue: 'tallblondman/my-flask-app', description: 'Name of the complete Docker image')
-        string(name: 'imageTag', defaultValue: "${env.BUILD_NUMBER}", description: 'Tag is the number of build')
-        string(name: 'dockerHost', defaultValue: '10.6.0.232:2376', description: 'The host on which Docker is installed and images will be deployed')
-        string(name: 'containerName', defaultValue: "flask-ver-${env.BUILD_NUMBER}", description: 'Name of the container that will be deployed on host')
+        //string(name: 'imageName', defaultValue: 'tallblondman/my-flask-app', description: 'Name of the complete Docker image')
+        //string(name: 'imageTag', defaultValue: "${env.BUILD_NUMBER}", description: 'Tag is the number of build')
+        //string(name: 'dockerHost', defaultValue: '10.6.0.232:2376', description: 'The host on which Docker is installed and images will be deployed')
+        //string(name: 'containerName', defaultValue: "flask-ver-${env.BUILD_NUMBER}", description: 'Name of the container that will be deployed on host')
     }
     stages {
         // This will build the image on 'worker' and run it for tests
@@ -36,9 +36,9 @@ pipeline {
                 // Build Docker image
                 node ('Deployment') {
                     script{
-                        //def imageName = "tallblondman/my-flask-app"
-                        //def imageTag = "${env.BUILD_NUMBER}"
-                        //def dockerHost = '10.6.0.232:2376'
+                        def imageName = "tallblondman/my-flask-app"
+                        def imageTag = "${env.BUILD_NUMBER}"
+                        def dockerHost = '10.6.0.232:2376'
                         sh 'ls -l'
                         sh 'pwd'
                         node {
@@ -67,9 +67,9 @@ pipeline {
 
                     // SSH into Docker host and run the container
                     script {
-                        //def imageName = "tallblondman/my-flask-app"
-                        //def imageTag = "${env.BUILD_NUMBER}"
-                        //def containerName = "flask-ver-${env.BUILD_NUMBER}"
+                        def imageName = "tallblondman/my-flask-app"
+                        def imageTag = "${env.BUILD_NUMBER}"
+                        def containerName = "flask-ver-${env.BUILD_NUMBER}"
 
                         sh 'hostname'
                         sh 'pwd'
