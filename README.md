@@ -8,7 +8,7 @@ Project was tested on a dockerized version of Jenkins which pose some issues wit
 
 1. To run this project you need a Jenkins with Docker container.
    I made one here - https://github.com/TallBlondMan/jenkins-with-docker
-2. This project deploys final image on a remote server with docker installed.
+2. This project deploys final image on a remote server with docker and java installed.
 
  ### Special config is required 
    >
